@@ -9,8 +9,9 @@
  */
 
 return array(
-    'name'          => __('Blocks'),
+    'name'          => 'Blocks',
     'version'       => '5.0',
+    'i18n_file' => 'novius_blocks::default',
     'icons'         => array(
         64 => 'static/apps/novius_blocks/img/64-blocks.png',
         32 => 'static/apps/novius_blocks/img/32-blocks.png',
@@ -24,7 +25,7 @@ return array(
     'namespace'     => 'Novius\Blocks',
     'launchers'     => array(
         'novius_blocks' => array(
-            'name'   => __('Blocks'),
+            'name'   => 'Blocks',
             'action' => array(
                 'action' => 'nosTabs',
                 'tab'    => array(
@@ -35,7 +36,7 @@ return array(
     ),
     'enhancers'     => array(
         'blocks' => array(
-            'title'      => __('Blocks'),
+            'title'      => 'Blocks',
             'id'         => 'blocks',
             'desc'       => '',
             'enhancer'   => 'novius_blocks/front/block/main',
@@ -50,13 +51,13 @@ return array(
     ),
     'data_catchers' => array(
         'novius_blocks' => array(
-            'title'            => __('Blocks'),
-            'description'      => __('Put forward this element'),
+            'title'            => 'Blocks',
+            'description'      => 'Put forward this element',
             'action'           => array(
                 'action' => 'nosTabs',
                 'tab'    => array(
                     'url'   => 'admin/novius_blocks/block/crud/insert_update/?context={{context}}&title={{urlencode:'.\Nos\DataCatcher::TYPE_TITLE.'}}&summary={{urlencode:'.\Nos\DataCatcher::TYPE_TEXT.'}}&thumbnail={{urlencode:'.\Nos\DataCatcher::TYPE_IMAGE.'}}&absolute_url={{urlencode:absolute_url}}',
-                    'label' => __('Block'),
+                    'label' => 'Block',
                 ),
             ),
             'onDemand'         => true,
