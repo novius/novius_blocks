@@ -16,11 +16,9 @@ switch ($class) {
         break;
         
     case 'Novius\OnlineMediaFiles\Model_Media':
-        if (!empty($value)) {
-            ?>
-            <img src="<?= $value->thumbnail() ?>" style="width:100%">
-            <?php
-        }
+        ?>
+        <img src="<?= $value->thumbnail() ?>" style="width:100%">
+        <?php
         break;
         
     default:
