@@ -14,13 +14,11 @@ switch ($class) {
         <?php
         }
         break;
-        
     case 'Novius\OnlineMediaFiles\Model_Media':
         ?>
         <img src="<?= $value->thumbnail() ?>" style="width:100%">
         <?php
         break;
-        
     default:
         echo "Can't preview : $class";
         break;
