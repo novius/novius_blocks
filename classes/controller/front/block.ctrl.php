@@ -11,6 +11,7 @@
 namespace Novius\Blocks;
 
 use Nos\Nos;
+use Nos\Tools_Wysiwyg;
 
 class Controller_Front_Block extends \Nos\Controller_Front_Application
 {
@@ -195,7 +196,7 @@ class Controller_Front_Block extends \Nos\Controller_Front_Application
         }
 
         // Description (wysiwyg)
-        $description = \Nos\Nos::parse_wysiwyg($block->wysiwygs->description);
+        $description = static::parse_wysiwyg($block->wysiwygs->description);
 
         // CSS class
         if (!empty($block->block_class)) {
@@ -226,5 +227,56 @@ class Controller_Front_Block extends \Nos\Controller_Front_Application
         ));
 
         return $view;
+    }
+
+    protected static function parse_wysiwyg($content) {
+        if (NOS_ENTRY_POINT == Nos::ENTRY_POINT_ADMIN) {
+            //custom parse in back office
+            //avoid replacing enhancers by changing the callback
+            Tools_Wysiwyg::parseEnhancers(
+                $content,
+                function ($enhancer, $config, $tag) use (&$content) {
+//TODO make the Core accept hmvc calls on action_preview (should not return ajax content) => would allow to display a preview
+//                    $prev_url = \Nos\Config_Data::get('enhancers.'.$enhancer.'.previewUrl', null);
+                    $title = \Nos\Config_Data::get('enhancers.'.$enhancer.'.title', null);
+//                    if (!empty($prev_url)) {
+//                        $config = html_entity_decode($config);
+//                        $function_content = Nos::hmvc($prev_url, array(\Format::forge($config, 'json')->to_array()));
+//                        $content = str_replace($tag, $function_content, $content);
+//                    } else {
+                        $content = str_replace($tag, '<h2>'.$title.'<h2>', $content);
+//                    }
+                }
+            );
+
+            Tools_Wysiwyg::parse_medias(
+                $content,
+                function ($media, $params) use (&$content) {
+                    if (empty($media)) {
+                        if ($params['tag'] == 'img') {
+                            // Remove dead images
+                            $content = str_replace($params['content'], '', $content);
+                        } elseif ($params['tag'] == 'a') {
+                            // Remove href for links (they become anchor)?
+                            // http://stackoverflow.com/questions/11144653/a-script-links-without-href
+                            //$content = str_replace('href="'.$params['url'].'"', '', $content);
+                        }
+                    } else {
+                        if (!empty($params['height'])) {
+                            $media_url = $media->urlResized($params['width'], $params['height']);
+                        } else {
+                            $media_url = $media->url();
+                        }
+                        $new_content = preg_replace('`'.preg_quote($params['url'], '`').'(?!\d)`u', Tools_Url::encodePath($media_url), $params['content']);
+                        $content = str_replace($params['content'], $new_content, $content);
+                    }
+                }
+            );
+            //and it's useless to deal with links (see the original parse_wysiwyg)
+            return $content;
+        } else {
+            //classic parse in front (deal with enhancers)
+            return Tools_Wysiwyg::parse($content);
+        }
     }
 }
