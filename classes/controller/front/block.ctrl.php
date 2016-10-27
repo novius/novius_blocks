@@ -99,7 +99,7 @@ class Controller_Front_Block extends \Nos\Controller_Front_Application
                     ));
                     $blocks     = array();
                     foreach ($args['blocks_ids'] as $id) {
-                        if(isset($blocks_tmp[$id])) {
+                        if (isset($blocks_tmp[$id])) {
                             $blocks[$blocks_tmp[$id]->block_id] = $blocks_tmp[$id];
                         }
                     }
