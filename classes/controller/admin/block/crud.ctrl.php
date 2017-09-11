@@ -101,6 +101,10 @@ class Controller_Admin_Block_Crud extends \Nos\Controller_Admin_Crud
             }
             $layoutExpanderKey = "layout.0.params.content.template.params.title";
             \Arr::set($this->config, $layoutExpanderKey, \Arr::get($this->config, $layoutExpanderKey, '')." : ".$blockConfig['title']);
+        } else {
+            //select template first
+            //if template no chosen, don't show the title input
+            \Arr::set($this->config, "layout.0.params.title", array());
         }
 
         $this->config['layout_insert'] = $this->config['layout'];
