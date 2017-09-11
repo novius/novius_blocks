@@ -104,7 +104,7 @@ class Controller_Admin_Block_Crud extends \Nos\Controller_Admin_Crud
         } else {
             //select template first
             //if template no chosen, don't show the title input
-            \Arr::set($this->config, "layout.0.params.title", array());
+            \Arr::set($this->config, "layout.0.params.title", false);
         }
 
         $this->config['layout_insert'] = $this->config['layout'];
